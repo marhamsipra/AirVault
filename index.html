@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirVault | Private Wireless</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ppnavy: '#001435',
+                        ppblue: '#0070ba',
+                        pphover: '#005ea6',
+                        pplight: '#f5f7fa',
+                        ppgray: '#6c7378',
+                        ppborder: '#e1e7ec',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #001435;
+            background-color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .paypal-btn-primary {
+            background-color: #0070ba;
+            color: #ffffff;
+            transition: all 0.25s ease-in-out;
+        }
+        .paypal-btn-primary:hover {
+            background-color: #005ea6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 112, 186, 0.25);
+        }
+
+        .paypal-btn-secondary {
+            background-color: transparent;
+            color: #0070ba;
+            border: 1.5px solid #0070ba;
+            transition: all 0.25s ease-in-out;
+        }
+        .paypal-btn-secondary:hover {
+            background-color: rgba(0, 112, 186, 0.05);
+            border-color: #005ea6;
+            color: #005ea6;
+            transform: translateY(-2px);
+        }
+
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(0, 20, 53, 0.05);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-shadow:hover {
+            box-shadow: 0 12px 32px rgba(0, 20, 53, 0.09);
+            transform: translateY(-3px);
+        }
+
+        /* Scroll Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger Delays */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5f7fa;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 99px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-ppblue selection:text-white">
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-ppborder transition-all">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <!-- Text Logo & Developer Badge -->
+            <div class="flex items-center space-x-3">
+                <a href="#" class="text-2xl font-extrabold tracking-tight text-ppnavy flex items-center gap-1">
+                    <span>AirVault</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-ppblue"></span>
+                </a>
+                <span class="hidden sm:inline-block px-2.5 py-1 rounded-full text-[11px] font-medium bg-pplight border border-ppborder text-ppgray">
+                    By Muhammad Arham
+                </span>
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-ppnavy">
+                <a href="#features" class="hover:text-ppblue transition-colors">Features</a>
+                <a href="#architecture" class="hover:text-ppblue transition-colors">Architecture</a>
+                <a href="#tech-specs" class="hover:text-ppblue transition-colors">Specifications</a>
+                <a href="#support" class="hover:text-ppblue transition-colors">Support Project</a>
+            </nav>
+
+            <!-- CTA Actions -->
+            <div class="hidden sm:flex items-center space-x-4">
+                <a href="#support" class="px-6 py-2.5 rounded-full text-xs font-semibold paypal-btn-primary shadow-sm">
+                    Support Project
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button onclick="toggleMobileNav()" class="md:hidden text-ppnavy focus:outline-none p-2" aria-label="Toggle Navigation">
+                <i id="mobile-nav-icon" class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown Navigation -->
+        <div id="mobile-nav" class="hidden md:hidden bg-white border-b border-ppborder px-6 py-4 space-y-3">
+            <a href="#features" onclick="toggleMobileNav()" class="block text-sm font-medium text-ppnavy hover:text-ppblue">Features</a>
+            <a href="#architecture" onclick="toggleMobileNav()" class="block text-sm font-medium text-ppnavy hover:text-ppblue">Architecture</a>
+            <a href="#tech-specs" onclick="toggleMobileNav()" class="block text-sm font-medium text-ppnavy hover:text-ppblue">Specifications</a>
+            <a href="#support" onclick="toggleMobileNav()" class="block text-sm font-medium text-ppnavy hover:text-ppblue">Support Project</a>
+            <div class="pt-3 border-t border-ppborder">
+                <a href="#support" onclick="toggleMobileNav()" class="w-full block text-center py-2.5 rounded-full text-xs font-semibold paypal-btn-primary">Support Project</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+
+        <!-- HERO SECTION -->
+        <section class="relative bg-white py-16 md:py-24 overflow-hidden border-b border-ppborder">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Left Hero Text -->
+                    <div class="lg:col-span-7 space-y-6 reveal">
+                        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-pplight border border-ppborder text-ppnavy text-xs font-semibold">
+                            <span class="w-2 h-2 rounded-full bg-ppblue"></span>
+                            <span>Created & Engineered by Muhammad Arham</span>
+                        </div>
+
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-ppnavy leading-[1.12]">
+                            Your private HDD.<br>
+                            Shared wirelessly, <span class="text-ppblue">effortlessly fast.</span>
+                        </h1>
+
+                        <p class="text-base sm:text-lg text-ppgray max-w-2xl font-normal leading-relaxed">
+                            AirVault transforms any standard USB Hard Drive into a dedicated wireless cloud storage system powered by a Raspberry Pi. Built for high-speed local data sharing without third-party dependencies.
+                        </p>
+
+                        <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                            <a href="#support" class="px-8 py-3.5 rounded-full text-sm font-semibold paypal-btn-primary text-center shadow-md">
+                                Support the Project
+                            </a>
+                            <a href="#architecture" class="px-8 py-3.5 rounded-full text-sm font-semibold paypal-btn-secondary text-center">
+                                View Architecture
+                            </a>
+                        </div>
+
+                        <!-- Highlights -->
+                        <div class="pt-6 flex flex-wrap items-center gap-6 text-xs text-ppgray border-t border-slate-100">
+                            <span class="flex items-center gap-1.5 font-medium"><i class="fa-solid fa-shield-halved text-ppblue"></i> 100% Local Privacy</span>
+                            <span class="flex items-center gap-1.5 font-medium"><i class="fa-solid fa-wifi text-ppblue"></i> High-Speed Wireless</span>
+                            <span class="flex items-center gap-1.5 font-medium"><i class="fa-solid fa-microchip text-ppblue"></i> Raspberry Pi Powered</span>
+                        </div>
+                    </div>
+
+                    <!-- Right Hero Clean Showcase Card -->
+                    <div class="lg:col-span-5 reveal delay-2">
+                        <div class="bg-pplight rounded-3xl p-6 md:p-8 border border-ppborder card-shadow space-y-6">
+                            
+                            <!-- Header pill -->
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold uppercase tracking-wider text-ppnavy">System Overview</span>
+                                <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> AirVault Online
+                                </span>
+                            </div>
+
+                            <!-- HDD Specs Display Card -->
+                            <div class="bg-white rounded-2xl p-5 border border-ppborder space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-ppblue flex items-center justify-center text-lg">
+                                            <i class="fa-solid fa-hard-drive"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-bold text-ppnavy">Wireless HDD Drive</h4>
+                                            <p class="text-[11px] text-ppgray">Mounted at /mnt/airvault</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-ppblue">Ready</span>
+                                </div>
+
+                                <div class="p-3 bg-pplight rounded-xl border border-ppborder space-y-2">
+                                    <div class="flex justify-between text-xs font-semibold text-ppnavy">
+                                        <span>Protocol Support</span>
+                                        <span class="text-ppblue">Samba & NFS</span>
+                                    </div>
+                                    <div class="flex justify-between text-xs font-semibold text-ppnavy">
+                                        <span>Network Interface</span>
+                                        <span class="text-ppblue">5GHz Wi-Fi / Ethernet</span>
+                                    </div>
+                                    <div class="flex justify-between text-xs font-semibold text-ppnavy">
+                                        <span>Developer Lead</span>
+                                        <span class="text-ppnavy">Muhammad Arham</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hardware Telemetry Pills -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-white p-3.5 rounded-2xl border border-ppborder flex items-center space-x-3">
+                                    <i class="fa-solid fa-wifi text-ppblue text-base"></i>
+                                    <div>
+                                        <p class="text-[10px] text-ppgray font-bold uppercase">Wi-Fi Network</p>
+                                        <p class="text-xs font-bold text-ppnavy">5GHz High Band</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3.5 rounded-2xl border border-ppborder flex items-center space-x-3">
+                                    <i class="fa-solid fa-bolt text-ppblue text-base"></i>
+                                    <div>
+                                        <p class="text-[10px] text-ppgray font-bold uppercase">Power Usage</p>
+                                        <p class="text-xs font-bold text-ppnavy">Low Energy (&lt;10W)</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURE GRID SECTION -->
+        <section id="features" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="text-center max-w-3xl mx-auto space-y-3 mb-16 reveal">
+                    <h2 class="text-xs font-bold tracking-widest text-ppblue uppercase">Core Features</h2>
+                    <p class="text-3xl sm:text-4xl font-extrabold text-ppnavy tracking-tight">Engineered for seamless local connectivity.</p>
+                    <p class="text-ppgray text-sm sm:text-base">Designed by Muhammad Arham to bring effortless wireless file sharing to standard external hard drives.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Feature Card 1 -->
+                    <div class="p-8 rounded-3xl bg-white border border-ppborder card-shadow flex flex-col justify-between space-y-4 reveal delay-1">
+                        <div class="w-12 h-12 rounded-2xl bg-pplight flex items-center justify-center text-ppblue text-xl">
+                            <i class="fa-solid fa-wifi"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-lg font-bold text-ppnavy">Wireless Transfer</h3>
+                            <p class="text-xs text-ppgray leading-relaxed">
+                                Share high-resolution photos, 4K videos, and large documents over fast 5GHz Wi-Fi without needing physical cables.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature Card 2 -->
+                    <div class="p-8 rounded-3xl bg-white border border-ppborder card-shadow flex flex-col justify-between space-y-4 reveal delay-2">
+                        <div class="w-12 h-12 rounded-2xl bg-pplight flex items-center justify-center text-ppblue text-xl">
+                            <i class="fa-solid fa-network-wired"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-lg font-bold text-ppnavy">Samba & NFS Protocol</h3>
+                            <p class="text-xs text-ppgray leading-relaxed">
+                                Native integration with Windows File Explorer, macOS Finder, Linux, and mobile file managers out of the box.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature Card 3 -->
+                    <div class="p-8 rounded-3xl bg-white border border-ppborder card-shadow flex flex-col justify-between space-y-4 reveal delay-3">
+                        <div class="w-12 h-12 rounded-2xl bg-pplight flex items-center justify-center text-ppblue text-xl">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-lg font-bold text-ppnavy">100% Private Local Storage</h3>
+                            <p class="text-xs text-ppgray leading-relaxed">
+                                Your data never leaves your home network. Enjoy private, secure storage with zero cloud subscription fees.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature Card 4 -->
+                    <div class="p-8 rounded-3xl bg-white border border-ppborder card-shadow flex flex-col justify-between space-y-4 reveal delay-4">
+                        <div class="w-12 h-12 rounded-2xl bg-pplight flex items-center justify-center text-ppblue text-xl">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-lg font-bold text-ppnavy">Low Power Efficiency</h3>
+                            <p class="text-xs text-ppgray leading-relaxed">
+                                Powered by a Raspberry Pi, AirVault runs quietly 24/7 with minimal power consumption compared to bulky traditional NAS units.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SYSTEM ARCHITECTURE & DIAGRAM SECTION -->
+        <section id="architecture" class="py-20 bg-pplight border-y border-ppborder">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="text-center max-w-2xl mx-auto mb-16 space-y-3 reveal">
+                    <h2 class="text-xs font-bold tracking-widest text-ppblue uppercase">System Architecture</h2>
+                    <p class="text-3xl font-extrabold text-ppnavy tracking-tight">How AirVault Works</p>
+                    <p class="text-xs text-ppgray">Architected by Muhammad Arham for high reliability and simplicity.</p>
+                </div>
+
+                <!-- Interactive Hardware Diagram -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                    
+                    <!-- Diagram Box 1: Hard Drive -->
+                    <div class="bg-white p-8 rounded-3xl border border-ppborder card-shadow text-center space-y-4 reveal delay-1">
+                        <div class="w-16 h-16 rounded-2xl bg-pplight text-ppblue mx-auto flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-hard-drive"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-ppnavy">USB External HDD / SSD</h3>
+                        <p class="text-xs text-ppgray leading-relaxed">
+                            Formatted in NTFS, ext4, or exFAT. Connected via USB 3.0 to provide raw storage capacity.
+                        </p>
+                    </div>
+
+                    <!-- Connection Arrow / Controller -->
+                    <div class="bg-white p-8 rounded-3xl border border-ppblue/30 card-shadow text-center space-y-4 relative reveal delay-2">
+                        <div class="w-16 h-16 rounded-2xl bg-blue-50 text-ppblue mx-auto flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-ppnavy">Raspberry Pi Controller</h3>
+                        <p class="text-xs text-ppgray leading-relaxed">
+                            Runs Samba SMB services and manages power, mounting, network routing, and user access control.
+                        </p>
+                    </div>
+
+                    <!-- Diagram Box 3: Devices -->
+                    <div class="bg-white p-8 rounded-3xl border border-ppborder card-shadow text-center space-y-4 reveal delay-3">
+                        <div class="w-16 h-16 rounded-2xl bg-pplight text-ppblue mx-auto flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-laptop-mobile"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-ppnavy">Client Devices</h3>
+                        <p class="text-xs text-ppgray leading-relaxed">
+                            Laptops, smartphones, tablets, and Smart TVs access files instantly over the local Wi-Fi connection.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNICAL SPECIFICATIONS SECTION -->
+        <section id="tech-specs" class="py-20 bg-white border-b border-ppborder">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="text-center max-w-2xl mx-auto mb-16 space-y-3 reveal">
+                    <h2 class="text-xs font-bold tracking-widest text-ppblue uppercase">Technical Specifications</h2>
+                    <p class="text-3xl font-extrabold text-ppnavy tracking-tight">Project Stack & Requirements</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Specs Box 1 -->
+                    <div class="p-8 rounded-3xl bg-pplight border border-ppborder space-y-4 reveal delay-1">
+                        <h3 class="text-lg font-bold text-ppnavy flex items-center gap-2">
+                            <i class="fa-solid fa-microchip text-ppblue"></i> Hardware Requirements
+                        </h3>
+                        <ul class="space-y-3 text-xs text-ppnavy">
+                            <li class="flex justify-between pb-2 border-b border-ppborder">
+                                <span class="text-ppgray">SBC Model</span>
+                                <span class="font-semibold">Raspberry Pi 4 / Pi 3B+ / Pi Zero 2W</span>
+                            </li>
+                            <li class="flex justify-between pb-2 border-b border-ppborder">
+                                <span class="text-ppgray">Storage Interface</span>
+                                <span class="font-semibold">USB 3.0 / USB 2.0 External HDD or SSD</span>
+                            </li>
+                            <li class="flex justify-between pb-2 border-b border-ppborder">
+                                <span class="text-ppgray">Power Supply</span>
+                                <span class="font-semibold">5V / 3A Type-C Adapter (Recommended)</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-ppgray">Wireless Band</span>
+                                <span class="font-semibold">2.4GHz / 5GHz Wi-Fi Support</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Specs Box 2 -->
+                    <div class="p-8 rounded-3xl bg-pplight border border-ppborder space-y-4 reveal delay-2">
+                        <h3 class="text-lg font-bold text-ppnavy flex items-center gap-2">
+                            <i class="fa-solid fa-code text-ppblue"></i> Software & Protocols
+                        </h3>
+                        <ul class="space-y-3 text-xs text-ppnavy">
+                            <li class="flex justify-between pb-2 border-b border-ppborder">
+                                <span class="text-ppgray">Operating System</span>
+                                <span class="font-semibold">Raspberry Pi OS (64-bit Lite / Desktop)</span>
+                            </li>
+                            <li class="flex justify-between pb-2 border-b border-ppborder">
+                                <span class="text-ppgray">File Sharing Protocols</span>
+                                <span class="font-semibold">Samba (SMB/CIFS) / NFS / DLNA</span>
+                            </li>
+                            <li class="flex justify-between pb-2 border-b border-ppborder">
+                                <span class="text-ppgray">Supported Filesystems</span>
+                                <span class="font-semibold">ext4, NTFS, exFAT, FAT32</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-ppgray">Project Lead</span>
+                                <span class="font-semibold text-ppblue">Muhammad Arham</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUPPORT / DONATION ACCOUNT SECTION -->
+        <section id="support" class="py-20 bg-pplight border-t border-ppborder">
+            <div class="max-w-4xl mx-auto px-6 lg:px-12">
+                <div class="text-center space-y-3 mb-12 reveal">
+                    <h2 class="text-xs font-bold tracking-widest text-ppblue uppercase">Support The Developer</h2>
+                    <p class="text-3xl font-extrabold text-ppnavy tracking-tight">Fund AirVault Development</p>
+                    <p class="text-xs text-ppgray max-w-lg mx-auto">
+                        If you find this project helpful or want to support ongoing development by <strong>Muhammad Arham</strong>, feel free to contribute via JS Bank / Zindigi.
+                    </p>
+                </div>
+
+                <!-- Account Information Card -->
+                <div class="bg-white rounded-3xl p-8 border border-ppborder card-shadow reveal delay-1 space-y-6">
+                    <div class="flex items-center justify-between pb-6 border-b border-ppborder">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-ppblue flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-piggy-bank"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-ppnavy">Direct Bank / App Transfer</h3>
+                                <p class="text-xs text-ppgray">Pakistan Local Account & Wallet</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-ppblue">Active Account</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+                        <!-- Account Title -->
+                        <div class="bg-pplight p-4 rounded-2xl border border-ppborder space-y-1">
+                            <p class="text-ppgray font-medium uppercase text-[10px]">Account Title</p>
+                            <p class="text-sm font-bold text-ppnavy">Muhammad Arham</p>
+                        </div>
+
+                        <!-- Bank Name -->
+                        <div class="bg-pplight p-4 rounded-2xl border border-ppborder space-y-1">
+                            <p class="text-ppgray font-medium uppercase text-[10px]">Bank / Wallet</p>
+                            <p class="text-sm font-bold text-ppnavy">JS Bank / Zindigi</p>
+                        </div>
+
+                        <!-- Account Number -->
+                        <div class="bg-pplight p-4 rounded-2xl border border-ppborder space-y-1 relative">
+                            <p class="text-ppgray font-medium uppercase text-[10px]">Account Number / Mobile</p>
+                            <div class="flex items-center justify-between">
+                                <p id="acc-num" class="text-sm font-extrabold text-ppblue font-mono">03371605689</p>
+                                <button onclick="copyToClipboard('03371605689', this)" class="text-[11px] text-ppblue font-medium hover:underline focus:outline-none">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 text-center text-xs text-ppgray">
+                        <p class="flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-heart text-red-500"></i> Thank you for supporting independent developer hardware projects!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CLEAN FOOTER WITH DEVELOPER CREDIT -->
+    <footer class="bg-white border-t border-ppborder py-12 text-xs text-ppgray">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-3">
+                <span class="font-extrabold text-ppnavy text-sm">AirVault</span>
+                <span class="hidden sm:inline text-slate-300">•</span>
+                <span>Designed & Developed by <strong class="text-ppnavy">Muhammad Arham</strong></span>
+            </div>
+            
+            <div class="flex items-center space-x-6 font-medium">
+                <a href="#features" class="hover:text-ppblue transition-colors">Features</a>
+                <a href="#architecture" class="hover:text-ppblue transition-colors">Architecture</a>
+                <a href="#tech-specs" class="hover:text-ppblue transition-colors">Specifications</a>
+                <a href="#support" class="hover:text-ppblue transition-colors">Support Project</a>
+            </div>
+
+            <div>
+                <span>Raspberry Pi Wireless HDD Project</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT & SCROLL ANIMATIONS -->
+    <script>
+        // Scroll Reveal Observer
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        });
+
+        // Toggle Mobile Nav Drawer
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const icon = document.getElementById('mobile-nav-icon');
+            nav.classList.toggle('hidden');
+            if(nav.classList.contains('hidden')) {
+                icon.classList.replace('fa-xmark', 'fa-bars');
+            } else {
+                icon.classList.replace('fa-bars', 'fa-xmark');
+            }
+        }
+
+        // Copy Helper Function
+        function copyToClipboard(text, btn) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const origText = btn.innerText;
+            btn.innerText = 'Copied!';
+            setTimeout(() => { btn.innerText = origText; }, 2000);
+        }
+    </script>
+</body>
+</html>
